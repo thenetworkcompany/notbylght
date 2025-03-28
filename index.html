@@ -1,17 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOTBYLGHT</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="images/star-icon.png" />
+  <title>NOTBYLGHT</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #ffffff;
+      cursor: none;
+      font-family: sans-serif;
+    }
+
+    a#brand {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-decoration: none;
+      color: black;
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 1000;
+    }
+
+    a#brand:hover {
+      color: #0900FF;
+    }
+
+    .spray-image {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      object-fit: contain;
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+
+    @media (max-width: 768px) {
+      .spray-image {
+        width: 40px;
+        height: 40px;
+      }
+
+      a#brand {
+        font-size: 12px;
+        top: 10px;
+      }
+
+      body {
+        cursor: default;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="meme-container">
-            <img src="images/woody.png" alt="Curious?" class="meme-image">
-            <h1 class="meme-text">YOU CURIOUS HUH??</h1>
-        </div>
-    </div>
+  <a href="https://x.com/notbylght" target="_blank" id="brand">NOTBYLGHT</a>
+
+  <script>
+    const imageSources = [
+      'images/100x-wojak.png',
+      'images/ai-world.png',
+      'images/Artificial-Intelligence.png',
+      'images/astro-mog.png',
+      'images/balloon.png',
+      'images/buy.png',
+      'images/chrome-figure.png',
+      'images/comp.png',
+      'images/copyleft.png',
+      'images/crane.png',
+      'images/crying-wojak.png',
+      'images/ecs.png',
+      'images/euphoric-wojak.png',
+      'images/fuck.png',
+      'images/funkochad.png',
+      'images/gigachad.png',
+      'images/goldenbull-covert.png',
+      'images/horse-condom.png',
+      'images/IMG_9537.PNG',
+      'images/k.png',
+      'images/lux.png',
+      'images/milady-id.png',
+      'images/money.png',
+      'images/muppet-justin.png',
+      'images/neverleft.PNG',
+      'images/pink-euphoria.png',
+      'images/polar-bear.png',
+      'images/reg-wojak.png',
+      'images/robot-dog.png',
+      'images/skin.png',
+      'images/star-icon.png',
+      'images/stonk.png',
+      'images/Terameme.png',
+      'images/trash.png',
+      'images/usa-bull.png',
+      'images/usa-jet.png',
+      'images/wave.png',
+      'images/white-n64.png',
+      'images/white-robot-horse.png',
+      'images/x.png',
+    ];
+  
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+  shuffleArray(imageSources);
+
+    let index = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      const img = document.createElement('img');
+      img.src = imageSources[index % imageSources.length];
+      img.classList.add('spray-image');
+      document.body.appendChild(img);
+
+      img.style.width = '400px';
+      img.style.height = '400px';
+      const offsetX = (Math.random() - 0.5) * 100;
+      const offsetY = (Math.random() - 0.5) * 100;
+      const rotation = (Math.random() - 0.5) * 30;
+
+      img.style.left = `${e.clientX}px`;
+      img.style.top = `${e.clientY}px`;
+      img.style.transform = `translate(${offsetX}px, ${offsetY}px) rotate(${rotation}deg)`;
+      img.style.opacity = 1;
+      img.style.transition = 'opacity 2.2s ease-out';
+
+      requestAnimationFrame(() => {
+        img.style.opacity = 0;
+      });
+
+      setTimeout(() => {
+        img.remove();
+      }, 2200);
+
+      index++;
+    });
+
+    document.addEventListener('touchmove', (e) => {
+      const touch = e.touches[0];
+      if (!touch) return;
+
+      const img = document.createElement('img');
+      img.src = imageSources[index % imageSources.length];
+      img.classList.add('spray-image');
+      document.body.appendChild(img);
+
+      const size = 40 + Math.random() * 40;
+      const offsetX = (Math.random() - 0.5) * 100;
+      const offsetY = (Math.random() - 0.5) * 100;
+      const rotation = (Math.random() - 0.5) * 30;
+
+      img.style.width = `${size}px`;
+      img.style.height = `${size}px`;
+      img.style.left = `${touch.clientX}px`;
+      img.style.top = `${touch.clientY}px`;
+      img.style.transform = `translate(${offsetX}px, ${offsetY}px) rotate(${rotation}deg)`;
+      img.style.opacity = 1;
+      img.style.transition = 'opacity 2.2s ease-out';
+
+      requestAnimationFrame(() => {
+        img.style.opacity = 0;
+      });
+
+      setTimeout(() => {
+        img.remove();
+      }, 2200);
+
+      index++;
+    });
+  </script>
 </body>
 </html>

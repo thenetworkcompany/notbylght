@@ -44,8 +44,8 @@
 
     @media (max-width: 768px) {
       .spray-image {
-        width: 40px;
-        height: 40px;
+        width: 120px;
+        height: 120px;
       }
 
       a#brand {
@@ -114,6 +114,12 @@
   }
   shuffleArray(imageSources);
 
+  // Preload images
+  imageSources.forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+
     let index = 0;
 
     document.addEventListener('mousemove', (e) => {
@@ -145,37 +151,45 @@
       index++;
     });
 
+    let lastTouchTime = 0;
+
     document.addEventListener('touchmove', (e) => {
+      const now = Date.now();
+      if (now - lastTouchTime < 80) return; // simple debounce
+      lastTouchTime = now;
+
       const touch = e.touches[0];
       if (!touch) return;
 
-      const img = document.createElement('img');
-      img.src = imageSources[index % imageSources.length];
-      img.classList.add('spray-image');
-      document.body.appendChild(img);
-
-      const size = 40 + Math.random() * 40;
-      const offsetX = (Math.random() - 0.5) * 100;
-      const offsetY = (Math.random() - 0.5) * 100;
-      const rotation = (Math.random() - 0.5) * 30;
-
-      img.style.width = `${size}px`;
-      img.style.height = `${size}px`;
-      img.style.left = `${touch.clientX}px`;
-      img.style.top = `${touch.clientY}px`;
-      img.style.transform = `translate(${offsetX}px, ${offsetY}px) rotate(${rotation}deg)`;
-      img.style.opacity = 1;
-      img.style.transition = 'opacity 2.2s ease-out';
-
       requestAnimationFrame(() => {
-        img.style.opacity = 0;
+        const img = document.createElement('img');
+        img.src = imageSources[index % imageSources.length];
+        img.classList.add('spray-image');
+        document.body.appendChild(img);
+
+        const size = 80 + Math.random() * 40; // 80–120px for mobile
+        const offsetX = (Math.random() - 0.5) * 60;
+        const offsetY = (Math.random() - 0.5) * 60;
+        const rotation = (Math.random() - 0.5) * 30;
+
+        img.style.width = `${size}px`;
+        img.style.height = `${size}px`;
+        img.style.left = `${touch.clientX}px`;
+        img.style.top = `${touch.clientY}px`;
+        img.style.transform = `translate(${offsetX}px, ${offsetY}px) rotate(${rotation}deg)`;
+        img.style.opacity = 1;
+        img.style.transition = 'opacity 2.2s ease-out';
+
+        requestAnimationFrame(() => {
+          img.style.opacity = 0;
+        });
+
+        setTimeout(() => {
+          img.remove();
+        }, 2200);
+
+        index++;
       });
-
-      setTimeout(() => {
-        img.remove();
-      }, 2200);
-
-      index++;
     });
   </script>
 </body>
